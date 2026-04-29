@@ -58,9 +58,9 @@ sensor_fusion_pkg/
 |---|---|---|---|
 | `/imu/data` | `sensor_msgs/Imu` | Subscriber | IMU linear acceleration |
 | `/depth` | `std_msgs/Float32` | Subscriber | Depth reading in metres |
-| `/vertical_velocity` | `std_msgs/Float32` | Publisher | Estimated vertical velocity (m/s) |
-| `/vertical_velocity/depth` | `std_msgs/Float32` | Publisher | Raw depth-derived velocity (m/s), for comparison |
-| `/vertical_velocity/imu` | `std_msgs/Float32` | Publisher | Raw IMU-integrated velocity (m/s), for comparison |
+| `/vertical_velocity` | `std_msgs/Float32` | Publisher | Estimated vertical velocity (in m/s) |
+| `/vertical_velocity/depth` | `std_msgs/Float32` | Publisher | Raw depth derived velocity (in m/s), for comparison |
+| `/vertical_velocity/imu` | `std_msgs/Float32` | Publisher | Raw IMU integrated velocity (in m/s), for comparison |
 
 Positive velocity values are shown when descending and negative velocity when ascending.
 
