@@ -120,7 +120,7 @@ pytest src/sensor_fusion_pkg/test/test_fused_data.py -v
 ### Building the image
 
 ```bash
-git clone <repo-url> sensor_fusion_pkg
+git clone https://github.com/Kiran1510/sensor_fusion_pkg
 cd sensor_fusion_pkg
 docker build -t sensor_fusion_pkg .
 ```
