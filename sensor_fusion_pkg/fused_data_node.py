@@ -7,9 +7,11 @@ subscribes to:
     /depth     (std_msgs/Float32)       - depth reading in meters
 
 publishes to:
-    /vertical_velocity (std_msgs/Float32) - estimated vertical velocity in m/s
-                                            positive = descending
-                                            negative = ascending
+    /vertical_velocity        (std_msgs/Float32) - complementary filter estimate (m/s)
+    /vertical_velocity/depth  (std_msgs/Float32) - raw depth-derived velocity (m/s)
+    /vertical_velocity/imu    (std_msgs/Float32) - raw IMU-integrated velocity (m/s)
+
+    positive = descending, negative = ascending
 
 how it works:
     depth differentiation alone is noisy. IMU integration alone drifts over time.
@@ -40,7 +42,7 @@ class FusedDataNode(Node):
 
     def __init__(self):
         super().__init__("fused_data")
-        
+
         #some of the tunable parameters
         self.declare_parameter("alpha", 0.98)
         self.declare_parameter("max_dt", 1.0)
@@ -55,10 +57,12 @@ class FusedDataNode(Node):
         #the latest IMU reading will be stored here until a depth message arrives
         self.latest_imu = None
 
-        #the subscribers and publisher
+        #the subscribers and publishers
         self.create_subscription(Imu, "/imu/data", self.imu_callback, 10)
         self.create_subscription(Float32, "/depth", self.depth_callback, 10)
         self.vel_pub = self.create_publisher(Float32, "/vertical_velocity", 10)
+        self.vel_depth_pub = self.create_publisher(Float32, "/vertical_velocity/depth", 10)
+        self.vel_imu_pub = self.create_publisher(Float32, "/vertical_velocity/imu", 10)
 
         self.get_logger().info("fused_data node started.")
 
@@ -101,10 +105,19 @@ class FusedDataNode(Node):
         #the complementary filter
         self.v_fused = self.alpha * v_imu + (1.0 - self.alpha) * v_depth
 
-        #we'll then publish
+        #publish the fused estimate (as per the given spec requirement)
         out = Float32()
         out.data = self.v_fused
         self.vel_pub.publish(out)
+
+        #also publish the raw signals for comparison (bonus)
+        depth_out = Float32()
+        depth_out.data = v_depth
+        self.vel_depth_pub.publish(depth_out)
+
+        imu_out = Float32()
+        imu_out.data = v_imu
+        self.vel_imu_pub.publish(imu_out)
 
         self.get_logger().debug(
             f"v_depth={v_depth:.3f}  v_imu={v_imu:.3f}  v_fused={self.v_fused:.3f} m/s")
