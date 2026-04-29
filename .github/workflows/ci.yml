@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      #building the image runs tests automatically (pytest is in the builder stage).
+      #if any test fails, the build fails and this step fails.
+      - name: Build Docker image (runs tests)
+        run: docker build -t sensor_fusion_pkg .

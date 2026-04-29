@@ -1,0 +1,7 @@
+#prevent copy build artifacts or local install into the docker image
+build/
+install/
+log/
+__pycache__/
+*.pyc
+.git/
