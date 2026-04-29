@@ -1,5 +1,7 @@
 # sensor_fusion_pkg
 
+![CI](https://github.com/Kiran1510/sensor_fusion_pkg/actions/workflows/ci.yml/badge.svg)
+
 A ROS2 Jazzy package that estimates vertical velocity by fusing IMU and depth sensor data using a complementary filter.
 
 ---
@@ -129,11 +131,14 @@ Unit tests run automatically during the Docker build. If any test fails, the bui
 
 ![Pytest Results](media/pytest.png)
 
+Pytest Results shown above.
+
 ![Docker Build 1](media/image_1.png)
 
 ![Docker Build 2](media/image_2.png)
 
 ![Docker Build 3](media/image_3.png)
+ 
 
 ### Run the node
 
