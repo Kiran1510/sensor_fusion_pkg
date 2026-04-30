@@ -85,7 +85,7 @@ Positive velocity values are shown when descending and negative velocity when as
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
-git clone <your-repo-url> sensor_fusion_pkg
+git clone https://github.com/Kiran1510/sensor_fusion_pkg
 cd ~/ros2_ws
 colcon build --packages-select sensor_fusion_pkg
 source install/setup.bash
